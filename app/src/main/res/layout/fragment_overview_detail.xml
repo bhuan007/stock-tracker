@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OverviewDetailFragment">
+
+
+    <TextView
+        android:id="@+id/txtLblClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Last Price:"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.33"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="$ ----"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/txtLblClose"
+        app:layout_constraintStart_toEndOf="@+id/txtLblClose"
+        app:layout_constraintTop_toTopOf="@+id/txtLblClose" />
+
+    <TextView
+        android:id="@+id/txtLblOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Open:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/txtLblClose"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtLblClose" />
+
+    <TextView
+        android:id="@+id/txtOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="$ ----"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/txtClose"
+        app:layout_constraintTop_toBottomOf="@+id/txtClose" />
+
+    <TextView
+        android:id="@+id/txtLblHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="High:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/txtLblOpen"
+        app:layout_constraintTop_toBottomOf="@+id/txtLblOpen" />
+
+    <TextView
+        android:id="@+id/txtHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="$ ----"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/txtOpen"
+        app:layout_constraintTop_toBottomOf="@+id/txtOpen" />
+
+
+    <TextView
+        android:id="@+id/txtLblLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Low:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/txtLblHigh"
+        app:layout_constraintTop_toBottomOf="@+id/txtLblHigh" />
+
+    <TextView
+        android:id="@+id/txtLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="$ ----"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/txtHigh"
+        app:layout_constraintTop_toBottomOf="@+id/txtHigh" />
+
+    <TextView
+        android:id="@+id/txtLblVolume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Volume:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/txtLblLow"
+        app:layout_constraintTop_toBottomOf="@+id/txtLblLow" />
+
+    <TextView
+        android:id="@+id/txtVolume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="---"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/txtLow"
+        app:layout_constraintTop_toBottomOf="@+id/txtLow" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

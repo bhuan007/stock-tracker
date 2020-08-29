@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        tools:context=".TrackDetailFragment">
+
+        <TextView
+            android:id="@+id/txtType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:text="Threshold Type:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/spinnerType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:entries="@array/threshold_tyes"
+            app:layout_constraintBottom_toBottomOf="@+id/txtType"
+            app:layout_constraintStart_toEndOf="@+id/txtType"
+            app:layout_constraintTop_toTopOf="@+id/txtType" />
+
+        <TextView
+            android:id="@+id/txtLblLow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="Low:"
+            app:layout_constraintEnd_toEndOf="@+id/txtType"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerType" />
+
+        <EditText
+            android:id="@+id/etLow"
+            android:layout_width="184dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/txtLblLow"
+            app:layout_constraintStart_toEndOf="@+id/txtLblLow"
+            app:layout_constraintTop_toTopOf="@+id/txtLblLow" />
+
+        <TextView
+            android:id="@+id/txtLblHigh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="High:"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/txtLblLow"
+            app:layout_constraintTop_toBottomOf="@+id/etLow" />
+
+        <EditText
+            android:id="@+id/etHigh"
+            android:layout_width="184dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="48dp"
+            android:inputType="numberDecimal"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/txtLblHigh"
+            app:layout_constraintStart_toEndOf="@+id/txtLblHigh"
+            app:layout_constraintTop_toTopOf="@+id/txtLblHigh"
+            app:layout_constraintVertical_bias="0.734" />
+
+        <TextView
+            android:id="@+id/txtLblStartDate"
+            android:layout_width="113dp"
+            android:layout_height="23dp"
+            android:layout_marginTop="36dp"
+            android:text="Start Tracking On:"
+            app:layout_constraintEnd_toEndOf="@+id/txtLblHigh"
+            app:layout_constraintTop_toBottomOf="@+id/etHigh" />
+
+        <Button
+            android:id="@+id/btnStartDate"
+            android:layout_width="118dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:text="Select Date"
+            app:layout_constraintEnd_toEndOf="@+id/txtDateSelected"
+            app:layout_constraintStart_toStartOf="@+id/txtDateSelected"
+            app:layout_constraintTop_toBottomOf="@+id/txtDateSelected" />
+
+        <TextView
+            android:id="@+id/txtDateSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:text="No Date Selected"
+            android:textColor="#FF0000"
+            app:layout_constraintBottom_toBottomOf="@+id/txtLblStartDate"
+            app:layout_constraintStart_toEndOf="@+id/txtLblStartDate"
+            app:layout_constraintTop_toTopOf="@+id/txtLblStartDate" />
+
+        <TextView
+            android:id="@+id/txtLblInterval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="Refresh Interval:"
+            app:layout_constraintEnd_toEndOf="@+id/txtLblStartDate"
+            app:layout_constraintTop_toBottomOf="@+id/btnStartDate" />
+
+        <EditText
+            android:id="@+id/etInterval"
+            android:layout_width="184dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@+id/txtLblInterval"
+            app:layout_constraintStart_toStartOf="@+id/btnStartDate"
+            app:layout_constraintTop_toTopOf="@+id/txtLblInterval" />
+
+        <Spinner
+            android:id="@+id/spinnerInterval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:entries="@array/interval"
+
+            app:layout_constraintEnd_toEndOf="@+id/etInterval"
+            app:layout_constraintTop_toBottomOf="@+id/etInterval" />
+
+        <Button
+            android:id="@+id/btnFinish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="FINISH and Track"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerInterval" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

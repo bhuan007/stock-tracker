@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Stock Tracker</string>
+    <string-array name="threshold_tyes">
+        <item>Low</item>
+        <item>High</item>
+        <item>Low and High</item>
+    </string-array>
+
+    <string-array name="interval">
+        <item>Minute(s)</item>
+        <item>Hour(s)</item>
+        <item>Day(s)</item>
+        <item>Week(s)</item>
+    </string-array>
+</resources>
