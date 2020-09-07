@@ -24,7 +24,6 @@ import java.util.Calendar;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -57,7 +56,6 @@ public class StockWorker extends Worker {
         Calendar calendar = Calendar.getInstance();
         DateFormat format = DateFormat.getDateInstance();
 
-
         Log.d(TAG, "Background service started at: " + format.format(calendar.getTime()));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -65,7 +63,6 @@ public class StockWorker extends Worker {
             NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-
 
         // We need to receive the id
         Data inputData = getInputData();
@@ -112,16 +109,14 @@ public class StockWorker extends Worker {
                             // LOW AND HIGH THRESHOLD
                             if (lowThreshold != -1 && highThreshold != -1) {
 
-
-
                                 if (closePrice[0] < lowThreshold) {
                                     notiTitle = lowThreshTitle;
-                                    notiText = symbol + "'s current price is now at " + closePriceString + ". \nYour low threshold is currently set at " + lowThreshString + ".";
+                                    notiText = symbol + "'s price is now at " + closePriceString + ". \nYour low threshold is currently set at " + lowThreshString + ".";
                                     sendNotification = true;
                                 }
                                 else if (closePrice[0] > highThreshold) {
                                     notiTitle = highThreshTitle;
-                                    notiText = symbol + "'s current price is now at " + closePriceString + ". \nYour high threshold is currently set at " + highThreshString + ".";
+                                    notiText = symbol + "'s price is now at " + closePriceString + ". \nYour high threshold is currently set at " + highThreshString + ".";
                                     sendNotification = true;
                                 }
                             }
@@ -129,7 +124,7 @@ public class StockWorker extends Worker {
                             else if (lowThreshold == -1 && highThreshold != -1) {
                                 if (closePrice[0] > highThreshold) {
                                     notiTitle = highThreshTitle;
-                                    notiText = symbol + "'s current price is now at " + closePriceString + ". \nYour high threshold is currently set at " + highThreshString + ".";
+                                    notiText = symbol + "'s price is now at " + closePriceString + ". \nYour high threshold is currently set at " + highThreshString + ".";
                                     sendNotification = true;
                                 }
 
@@ -138,7 +133,7 @@ public class StockWorker extends Worker {
                             else if (highThreshold == -1 && lowThreshold != -1) {
                                 if (closePrice[0] < lowThreshold) {
                                     notiTitle = lowThreshTitle;
-                                    notiText = symbol + "'s current price is now at " + closePriceString + ". \nYour low threshold is currently set at " + lowThreshString + ".";
+                                    notiText = symbol + "'s price is now at " + closePriceString + ". \nYour low threshold is currently set at " + lowThreshString + ".";
                                     sendNotification = true;
                                 }
 

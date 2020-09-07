@@ -6,10 +6,12 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.google.gson.JsonParser;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -32,7 +35,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class StockDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "StockDetailActivity";
-    TextView txtSymbol, txtDate, txtName, txtRefreshSchedule, txtTracking;
     public final static String SYMBOL_KEY = "symbol";
     public final static String IS_EXIST_KEY = "isExist";
     public final static String TICKER_ID = "tickerId";
@@ -41,6 +43,9 @@ public class StockDetailActivity extends AppCompatActivity {
     WebAPI api = new WebAPI();
     String name, description, address, exchange, sector, industry;
     Toolbar toolbar;
+    TextView txtSymbol, txtDate, txtName, txtRefreshSchedule, txtTracking;
+    LinearLayout nextRefreshBlock;
+
 
 
 
@@ -55,7 +60,7 @@ public class StockDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        StockDetailPagerAdapter adapter = new StockDetailPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, StockDetailActivity.this);
+        StockDetailPagerAdapter adapter = new StockDetailPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, this);
 
 
 
@@ -69,8 +74,17 @@ public class StockDetailActivity extends AppCompatActivity {
 
 
         if (isExist) {
+            nextRefreshBlock.setVisibility(View.VISIBLE);
             TickerModel ticker = db.tickerDao().getSingleTicker(id);
-            String scheduledTime = new SimpleDateFormat("MMM dd, yyyy h:mm a").format(ticker.getStartDate());
+            Calendar currentTime = Calendar.getInstance();
+            Long nextRefresh = ticker.getStartDate();
+
+            while (currentTime.getTimeInMillis() > nextRefresh) {
+                nextRefresh += ticker.getRepeatInterval();
+                ticker.setStartDate(nextRefresh);
+                db.tickerDao().updateSingleTicker(ticker);
+            }
+            String scheduledTime = new SimpleDateFormat("MMM dd, yyyy h:mm a").format(nextRefresh);
 
             txtRefreshSchedule.setText(scheduledTime);
             txtTracking.setText("TRACKING");
@@ -113,9 +127,6 @@ public class StockDetailActivity extends AppCompatActivity {
                             checkApiMax(s, "Overview", symbol);
 
                         }
-
-
-
                     }
 
                     @Override
@@ -147,10 +158,12 @@ public class StockDetailActivity extends AppCompatActivity {
 
                                             JsonObject timeSeries = fileObject.getAsJsonObject("Time Series (Daily)").getAsJsonObject(lastRefreshDate);
 
+                                            Double closePrice = timeSeries.get("4. close").getAsDouble();
+
                                             String open = currencyFormat.format(timeSeries.get("1. open").getAsDouble());
                                             String high = currencyFormat.format(timeSeries.get("2. high").getAsDouble());
                                             String low = currencyFormat.format(timeSeries.get("3. low").getAsDouble());
-                                            String close = currencyFormat.format(timeSeries.get("4. close").getAsDouble());
+                                            String close = currencyFormat.format(closePrice);
 
                                             String volume = numberFormat.format(timeSeries.get("5. volume").getAsDouble());
 
@@ -158,14 +171,14 @@ public class StockDetailActivity extends AppCompatActivity {
                                             if (isExist) {
                                                 //Updating stock price and refresh date
                                                 TickerModel tickerModel = db.tickerDao().getSingleTicker(id);
-                                                tickerModel.setCurrentPrice(close);
+                                                tickerModel.setCurrentPrice(closePrice);
                                                 tickerModel.setLastRefreshDate(lastRefreshDate);
                                                 db.tickerDao().updateSingleTicker(tickerModel);
                                             }
 
 
 
-                                            adapter.setDailyInfo(lastRefreshDate, open, high, low, close, volume);
+                                            adapter.setDailyInfo(lastRefreshDate, open, high, low, close, volume, closePrice);
                                             adapter.setOverviewInfo(name, symbol, description, address, exchange, sector, industry);
                                             adapter.setIsExist(isExist, id);
 
@@ -198,10 +211,6 @@ public class StockDetailActivity extends AppCompatActivity {
                     }
                 });
 
-
-
-
-
     }
 
     @Override
@@ -230,6 +239,8 @@ public class StockDetailActivity extends AppCompatActivity {
         txtRefreshSchedule = findViewById(R.id.txtRefreshSchedule);
         txtTracking = findViewById(R.id.txtTracking);
         toolbar = findViewById(R.id.toolBar);
+
+        nextRefreshBlock = findViewById(R.id.nextRefreshBlock);
     }
 
     private void checkApiMax(String s, String title, String symbol) {

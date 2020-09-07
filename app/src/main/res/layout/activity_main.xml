@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="#EDEDED">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -13,9 +15,20 @@
         app:menu="@menu/main_toolbar"
         android:id="@+id/toolBar"/>
 
+    <TextView
+        android:id="@+id/txtEmptyMessage"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/empty_db_message"
+        android:gravity="center_horizontal"
+        android:textColor="#000000"
+        android:textSize="16sp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mainRecView"/>
+
 
 </LinearLayout>

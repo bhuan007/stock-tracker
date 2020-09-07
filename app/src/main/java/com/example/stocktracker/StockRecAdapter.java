@@ -1,6 +1,9 @@
 package com.example.stocktracker;
 
+import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.cardview.widget.CardView;
+import androidx.work.WorkManager;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -25,10 +29,13 @@ public class StockRecAdapter extends RecyclerView.Adapter<StockRecAdapter.ViewHo
 
     ArrayList<TickerModel> tickers = new ArrayList<>();
     Context context;
+    Activity activity;
     TickerDatabase db;
+    DeleteInterface callback;
 
-    public StockRecAdapter(Context context) {
+    public StockRecAdapter(Context context, Activity activity) {
         this.context = context;
+        this.activity = activity;
     }
 
     public void setTickers() {
@@ -57,6 +64,8 @@ public class StockRecAdapter extends RecyclerView.Adapter<StockRecAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         db = TickerDatabase.getInstance(context);
 
+        callback = (DeleteInterface) context;
+
         holder.txtTickerName.setText(tickers.get(position).getSymbol());
         holder.txtRefresh.setText("Last Refreshed: " + tickers.get(position).getLastRefreshDate());
         holder.txtClose.setText("Closed at: " + tickers.get(position).getCurrentPrice());
@@ -66,22 +75,44 @@ public class StockRecAdapter extends RecyclerView.Adapter<StockRecAdapter.ViewHo
         Double lowThreshold = tickers.get(position).getLowThreshold();
         Double highThreshold = tickers.get(position).getHighThreshold();
 
+        Double currentPrice = tickers.get(position).getCurrentPrice();
+        Log.d(TAG, "current price for " + tickers.get(position).getStockName() + " is " + currentPrice);
+        Log.d(TAG, "value of contex is " + context);
+
         if (lowThreshold != null && highThreshold != null) {
             String low = currencyFormat.format(lowThreshold);
             String high = currencyFormat.format(highThreshold);
 
             holder.txtLowThreshold.setText("Low Reminder: " + low);
             holder.txtHighThreshold.setText("High Reminder: " + high);
+
+            if (currentPrice < lowThreshold) {
+                holder.txtLowIndicator.setVisibility(View.VISIBLE);
+            }
+            else if (currentPrice > highThreshold) {
+                holder.txtHighIndicator.setVisibility(View.VISIBLE);
+            }
+
+
         }
         else if (lowThreshold == null && highThreshold != null) {
             String high = currencyFormat.format(highThreshold);
             holder.txtLowThreshold.setText("Low Reminder: N/A");
             holder.txtHighThreshold.setText("High Reminder: " + high);
+
+            if (currentPrice > highThreshold) {
+                holder.txtHighIndicator.setVisibility(View.VISIBLE);
+            }
+
         }
         else if (lowThreshold != null && highThreshold == null) {
             String low = currencyFormat.format(lowThreshold);
             holder.txtLowThreshold.setText("Low Reminder: " + low);
             holder.txtHighThreshold.setText("High Reminder: N/A");
+
+            if (currentPrice < lowThreshold) {
+                holder.txtLowIndicator.setVisibility(View.VISIBLE);
+            }
         }
 
         holder.parent.setOnClickListener(new View.OnClickListener() {
@@ -104,16 +135,22 @@ public class StockRecAdapter extends RecyclerView.Adapter<StockRecAdapter.ViewHo
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+
+                                callback.cancelAlarm(tickers.get(position).getId());
+
                                 db.tickerDao().deleteSingleTicker(tickers.get(position));
 
                                 tickers = (ArrayList<TickerModel>) db.tickerDao().getAllTickers();
+
+                                callback.showEmptyText();
+
+
                                 notifyItemRemoved(position);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
                             }
                         });
                 builder.create().show();
@@ -130,7 +167,7 @@ public class StockRecAdapter extends RecyclerView.Adapter<StockRecAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView txtTickerName, txtClose, txtRefresh, txtLowThreshold, txtHighThreshold, txtStockName;
+        TextView txtTickerName, txtClose, txtRefresh, txtLowThreshold, txtHighThreshold, txtStockName, txtHighIndicator, txtLowIndicator;
         Button btnDelete;
         CardView parent;
 
@@ -145,6 +182,15 @@ public class StockRecAdapter extends RecyclerView.Adapter<StockRecAdapter.ViewHo
             txtLowThreshold = itemView.findViewById(R.id.txtLowThreshold);
             txtStockName = itemView.findViewById(R.id.txtStockName);
             txtHighThreshold = itemView.findViewById(R.id.txtHighThreshold);
+
+            txtHighIndicator = itemView.findViewById(R.id.txtHighIndicator);
+            txtLowIndicator = itemView.findViewById(R.id.txtLowIndicator);
         }
     }
+
+    public interface DeleteInterface {
+        public void showEmptyText();
+        public void cancelAlarm(int id);
+    }
+
 }

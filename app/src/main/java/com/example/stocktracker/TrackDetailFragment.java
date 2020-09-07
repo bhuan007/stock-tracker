@@ -1,17 +1,19 @@
 package com.example.stocktracker;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.work.Constraints;
 import androidx.work.Data;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -28,12 +30,10 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class TrackDetailFragment extends Fragment {
@@ -47,8 +47,9 @@ public class TrackDetailFragment extends Fragment {
     private Context context;
     private TickerDatabase db;
     private Long refreshDate, refreshInterval;
-    private String currentPrice, symbol, lastRefresh, stockName;
+    private String symbol, lastRefresh, stockName;
     private Boolean isExist;
+    private Double currentPrice;
     private int id;
 
     private Calendar startDate = Calendar.getInstance();
@@ -57,13 +58,15 @@ public class TrackDetailFragment extends Fragment {
         this.context = context;
     }
 
+    public TrackDetailFragment() {}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         db = TickerDatabase.getInstance(context);
 
-        currentPrice = getArguments().getString("currentPrice");
+        currentPrice = getArguments().getDouble("currentPrice");
         isExist = getArguments().getBoolean("isExist");
         lastRefresh = getArguments().getString("lastRefresh");
         stockName = getArguments().getString("stockName");
@@ -191,11 +194,6 @@ public class TrackDetailFragment extends Fragment {
                             txtDateSelected.setText("Please select a future Date.");
                         }
 
-
-
-
-
-
                         alertDialog.dismiss();
 
                     }
@@ -203,6 +201,14 @@ public class TrackDetailFragment extends Fragment {
             }
         });
 
+
+
+        return layout;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -215,7 +221,7 @@ public class TrackDetailFragment extends Fragment {
                     ticker = db.tickerDao().getSingleTicker(id);
                 }
                 else {
-                     ticker = new TickerModel();
+                    ticker = new TickerModel();
                 }
 
                 switch(spinnerType.getSelectedItem().toString()) {
@@ -270,26 +276,21 @@ public class TrackDetailFragment extends Fragment {
                 // TODO: initialize worker thread
                 if (isExist) {
                     db.tickerDao().updateSingleTicker(ticker);
-                    initWorker(id, isExist);
+
+                    AlarmHelper.initAlarm(getActivity(), id, isExist, startDate.getTimeInMillis(), refreshInterval);
+
                 }
                 else {
                     db.tickerDao().insertSingleTicker(ticker);
                     TickerModel newTicker = db.tickerDao().getSingleTickerByName(symbol);
                     int newId = newTicker.getId();
-                    initWorker(newId, isExist);
+                    AlarmHelper.initAlarm(getActivity(), newId, isExist, startDate.getTimeInMillis(), refreshInterval);
                 }
 
                 Intent intent = new Intent(context, MainActivity.class);
                 startActivity(intent);
             }
         });
-
-
-
-
-
-
-        return layout;
     }
 
     private void initViews() {
@@ -309,99 +310,5 @@ public class TrackDetailFragment extends Fragment {
 
     }
 
-    private void initWorker(int id, boolean isExist) {
 
-        // Replace the following for each tickerModel
-        TickerModel ticker = db.tickerDao().getSingleTicker(id);
-        // Tag format: id_ticker
-        String tag = ticker.getId() + "_" + ticker.getSymbol();
-        Calendar currentDate = Calendar.getInstance();
-        DateFormat dateFormat = DateFormat.getDateInstance();
-        Long startDateMilliseconds = ticker.getStartDate();
-        Long currentDateMilliseconds = currentDate.getTimeInMillis();
-        Long delayMilliseconds = startDateMilliseconds - currentDateMilliseconds;
-
-        String currentDateString = dateFormat.format(currentDate.getTime());
-
-
-        Log.d(TAG, "initWorker: currentDateString is " + currentDateString);
-
-
-
-
-        int repeatInterval = 0;
-        TimeUnit timeUnit = TimeUnit.HOURS;
-
-        switch (ticker.getIntervalType()) {
-            case "Minute(s)":
-                timeUnit = TimeUnit.MINUTES;
-
-                repeatInterval = (int) (ticker.getRepeatInterval() / 60000);
-                break;
-            case "Hour(s)":
-                timeUnit = TimeUnit.HOURS;
-                repeatInterval = (int) (ticker.getRepeatInterval() / 3600000);
-                break;
-            case "Day(s)":
-                timeUnit = TimeUnit.DAYS;
-                repeatInterval = (int) (ticker.getRepeatInterval() / 86400000);
-                break;
-            case "Week(s)":
-                timeUnit = TimeUnit.DAYS;
-                repeatInterval = (int) (ticker.getRepeatInterval() / 604800000) * 7;
-                break;
-            default:
-                break;
-        }
-
-
-        Data data = null;
-
-        // TODO: pass stock name into data, so we can show it on Notification
-        if (ticker.getHighThreshold() != null && ticker.getLowThreshold() != null) {
-             data = new Data.Builder()
-                    .putString(StockWorker.STOCK_TICKER, ticker.getSymbol())
-                     .putString(StockWorker.STOCK_NAME, stockName)
-                    .putDouble(StockWorker.STOCK_LOW_THRESHOLD, ticker.getLowThreshold())
-                    .putDouble(StockWorker.STOCK_HIGH_THRESHOLD, ticker.getHighThreshold())
-                    .putInt(StockWorker.STOCK_ID, ticker.getId())
-                    .build();
-        }
-        else if (ticker.getHighThreshold() != null) {
-            data = new Data.Builder()
-                    .putString(StockWorker.STOCK_TICKER, ticker.getSymbol())
-                    .putString(StockWorker.STOCK_NAME, stockName)
-                    .putDouble(StockWorker.STOCK_HIGH_THRESHOLD, ticker.getHighThreshold())
-                    .putInt(StockWorker.STOCK_ID, ticker.getId())
-                    .build();
-        }
-        else if (ticker.getLowThreshold() != null) {
-            data = new Data.Builder()
-                    .putString(StockWorker.STOCK_TICKER, ticker.getSymbol())
-                    .putString(StockWorker.STOCK_NAME, stockName)
-                    .putDouble(StockWorker.STOCK_LOW_THRESHOLD, ticker.getLowThreshold())
-                    .putInt(StockWorker.STOCK_ID, ticker.getId())
-                    .build();
-        }
-
-
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-
-        // Set initial delay here
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(StockWorker.class, repeatInterval, timeUnit)
-                .setInputData(data)
-                .setConstraints(constraints)
-                .setInitialDelay(delayMilliseconds, TimeUnit.MILLISECONDS)
-                .addTag(tag)
-                .build();
-
-        if (isExist) {
-            WorkManager.getInstance(context).cancelAllWorkByTag(tag);
-        }
-        WorkManager.getInstance(context).enqueue(periodicWorkRequest);
-        Log.d(TAG, "initWorker: enqued worker thread");
-
-    }
 }

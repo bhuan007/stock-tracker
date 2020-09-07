@@ -1,12 +1,10 @@
 package com.example.stocktracker;
 
-import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.Calendar;
 
 @Entity(tableName = "tickers")
 public class TickerModel {
@@ -21,7 +19,7 @@ public class TickerModel {
     @ColumnInfo(name = "high_threshold")
     private Double highThreshold;
     @ColumnInfo(name = "current_price")
-    private String currentPrice;
+    private Double currentPrice;
     @ColumnInfo(name = "start_date")
     private Long startDate;
     @ColumnInfo(name = "last_refresh_date")
@@ -40,7 +38,7 @@ public class TickerModel {
     public TickerModel() {
     }
 
-    public TickerModel(String symbol, String stockName, Double lowThreshold, Double highThreshold, String currentPrice, Long startDate, String lastRefreshDate, Long repeatInterval, String intervalType) {
+    public TickerModel(String symbol, String stockName, Double lowThreshold, Double highThreshold, Double currentPrice, Long startDate, String lastRefreshDate, Long repeatInterval, String intervalType) {
         this.symbol = symbol;
         this.stockName = stockName;
         this.lowThreshold = lowThreshold;
@@ -84,11 +82,11 @@ public class TickerModel {
         this.highThreshold = highThreshold;
     }
 
-    public String getCurrentPrice() {
+    public Double getCurrentPrice() {
         return currentPrice;
     }
 
-    public void setCurrentPrice(String currentPrice) {
+    public void setCurrentPrice(Double currentPrice) {
         this.currentPrice = currentPrice;
     }
 

@@ -20,6 +20,7 @@ public class StockDetailPagerAdapter extends FragmentPagerAdapter {
     String open, high, low, close, volume;
     Boolean isExist;
     int id;
+    Double closePrice;
 
     //Overview
     String symbol, description, address, exchange, sector, industry, lastRefresh, stockName;
@@ -68,7 +69,7 @@ public class StockDetailPagerAdapter extends FragmentPagerAdapter {
                 Bundle trackerBundle = new Bundle();
                 trackerBundle.putString("lastRefresh", lastRefresh);
                 trackerBundle.putString("symbol", symbol);
-                trackerBundle.putString("currentPrice", close);
+                trackerBundle.putDouble("currentPrice", closePrice);
                 trackerBundle.putBoolean("isExist", isExist);
                 trackerBundle.putInt("id", id);
                 trackerBundle.putString("stockName", stockName);
@@ -106,7 +107,8 @@ public class StockDetailPagerAdapter extends FragmentPagerAdapter {
         this.id = id;
     }
 
-    public void setDailyInfo(String lastRefresh, String open, String high, String low, String close, String volume) {
+    public void setDailyInfo(String lastRefresh, String open, String high, String low, String close, String volume, Double closePrice) {
+        this.closePrice = closePrice;
         this.lastRefresh = lastRefresh;
         this.open = open;
         this.high = high;

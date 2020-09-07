@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Stock Tracker</string>
+    <string name="empty_db_message">Your stock list is empty!\nAdd a stock to your list by searching one.</string>
     <string-array name="threshold_tyes">
         <item>Low</item>
         <item>High</item>

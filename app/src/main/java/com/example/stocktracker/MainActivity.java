@@ -13,39 +13,26 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.CursorAdapter;
-import android.widget.Toast;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+import android.widget.TextView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import io.reactivex.rxjava3.core.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements StockRecAdapter.DeleteInterface {
     private static final String TAG = "MainActivity";
     Toolbar toolbar;
     RecyclerView mainRecView;
     SearchView search;
+    TextView txtEmptyMessage;
 
     Handler handler = new Handler();
     long delay = 500;
@@ -53,9 +40,11 @@ public class MainActivity extends AppCompatActivity {
     String searchText;
 
     private CompositeDisposable disposable = new CompositeDisposable();
-    private StockRecAdapter adapter = new StockRecAdapter(this);
+    private StockRecAdapter adapter = new StockRecAdapter(this, MainActivity.this);
     private WebAPI api = new WebAPI();
     private TickerDatabase db;
+
+
 
 
     @Override
@@ -65,8 +54,13 @@ public class MainActivity extends AppCompatActivity {
         adapter.setTickers();
         initViews();
 
+
         setSupportActionBar(toolbar);
         db = TickerDatabase.getInstance(this);
+        
+        if (db.tickerDao().getAllTickers().size() != 0) {
+            txtEmptyMessage.setVisibility(View.GONE);
+        }
 
     }
 
@@ -76,14 +70,8 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_toolbar, menu);
         search = (SearchView) menu.findItem(R.id.searchTicker).getActionView();
         searchCode();
-
-
-
-
         return super.onCreateOptionsMenu(menu);
     }
-
-
 
     @Override
     protected void onDestroy() {
@@ -100,9 +88,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-
-
 
     private Runnable input_check = new Runnable() {
         @Override
@@ -196,17 +181,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(this.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = this.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(this);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
     private void apiSearch() {
         api.getSymbols(searchText)
                 .subscribeOn(Schedulers.io())
@@ -242,6 +216,18 @@ public class MainActivity extends AppCompatActivity {
 
         mainRecView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         mainRecView.setAdapter(adapter);
+        txtEmptyMessage = findViewById(R.id.txtEmptyMessage);
 
+    }
+
+
+    @Override
+    public void showEmptyText() {
+        txtEmptyMessage.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void cancelAlarm(int id) {
+        AlarmHelper.cancelAlarm(getBaseContext(), id);
     }
 }

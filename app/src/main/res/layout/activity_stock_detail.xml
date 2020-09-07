@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:padding="36dp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/txtSymbol"
@@ -54,10 +54,12 @@
             android:textSize="16sp" />
 
         <LinearLayout
+            android:id="@+id/nextRefreshBlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -86,7 +88,8 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabTextColor="#FFFFFF" />
+            app:tabTextColor="#FFFFFF"
+            app:tabIndicatorColor="#FF135D"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
