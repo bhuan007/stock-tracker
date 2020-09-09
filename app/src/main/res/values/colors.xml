@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#c5cae9</color>
+    <color name="colorPrimaryDark">#9499b7</color>
+    <color name="colorPrimaryLight">#f8fdff</color>
+
+    <color name="colorSecondary">#424242</color>
+    <color name="colorSecondaryLight">#6d6d6d</color>
+    <color name="colorSecondaryDark">#1b1b1b</color>
+
+    <color name="colorWhitePrimary">#eeeeee</color>
+    <color name="colorWhiteLight">#ffffff</color>
+    <color name="colorWhiteDark">#bcbcbc</color>
+
+    <color name="redAccentPrimary">#FF135D</color>
+    <color name="redAccentLight">#ff6090</color>
+    <color name="redAccentDark">#b0003a</color>
+
+    <color name="textOnPrimary">#000000</color>
+    <color name="textOnSecondary">#ffffff</color>
+
     <color name="dateSet">#2DB806</color>
     <color name="error">#FF0606</color>
+    <color name="triggeredLight">#ffd54f</color>
+    <color name="triggeredDark">#c8a415</color>
 </resources>

@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:text="SET"
         android:id="@+id/btnPickerSet"
-        android:backgroundTint="@color/colorAccent"/>
+        android:backgroundTint="@color/colorPrimary"/>
 
 
 </LinearLayout>

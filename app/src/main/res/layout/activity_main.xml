@@ -1,34 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="#EDEDED">
+    android:layout_width="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        app:menu="@menu/main_toolbar"
-        android:id="@+id/toolBar"/>
+        android:layout_height="match_parent"
+        android:background="@color/colorWhitePrimary"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:background="@color/colorWhitePrimary">
 
-    <TextView
-        android:id="@+id/txtEmptyMessage"
-        android:layout_marginTop="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/empty_db_message"
-        android:gravity="center_horizontal"
-        android:textColor="#000000"
-        android:textSize="16sp"/>
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:theme="@style/SearchViewStyle"
+                app:titleTextColor="@color/textOnSecondary"
+                app:menu="@menu/main_toolbar"
+                android:id="@+id/toolBar"
+                android:background="@color/redAccentPrimary"
+                android:nestedScrollingEnabled="true"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/mainRecView"/>
+            <TextView
+                android:id="@+id/txtEmptyMessage"
+                android:layout_marginTop="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_db_message"
+                android:gravity="center_horizontal"
+                android:textColor="#000000"
+                android:textSize="16sp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/mainRecView"/>
 
 
-</LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

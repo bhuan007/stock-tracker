@@ -6,25 +6,31 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".StockDetailActivity">
+    tools:context=".StockDetailActivity"
+    android:background="@color/colorWhiteLight">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:theme="@style/SearchViewStyle"
+        android:background="@color/redAccentPrimary"
+        app:titleTextColor="@color/colorWhiteLight"
         android:id="@+id/toolBar"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/card_secondary_background">
 
         <TextView
             android:id="@+id/txtSymbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000000"
+            android:textColor="@color/colorSecondary"
             android:textSize="52sp"
             android:textStyle="bold" />
 
@@ -88,8 +94,9 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabTextColor="#FFFFFF"
-            app:tabIndicatorColor="#FF135D"/>
+            app:tabTextColor="@color/textOnSecondary"
+            app:tabIndicatorColor="@color/redAccentPrimary"
+            android:background="@color/colorSecondary"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

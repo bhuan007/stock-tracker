@@ -8,7 +8,8 @@
     android:layout_gravity="center"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="12sp">
+    app:cardElevation="12sp"
+    android:backgroundTint="@color/colorWhiteLight">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,8 +22,9 @@
             android:id="@+id/txtTickerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="TSLA"
-            android:textColor="#000000"
+            android:textColor="@color/colorSecondary"
             android:textSize="32sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,15 +33,27 @@
 
         <TextView
             android:id="@+id/txtStockName"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="Tesla Automotive Corp."
-            android:textColor="#000000"
+            android:gravity="center"
+            android:text="Tesla Automotive Corp. of America"
+            android:textSize="16sp"
+            android:textColor="@color/colorSecondaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/txtTickerName"
             app:layout_constraintEnd_toStartOf="@+id/btnDelete"
             app:layout_constraintStart_toEndOf="@+id/txtTickerName"
             app:layout_constraintTop_toTopOf="@+id/txtTickerName" />
+
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="8dp"
+            android:background="@drawable/card_secondary_background"
+            app:constraint_referenced_ids="txtRefresh, txtClose, txtHighThreshold, txtLowThreshold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtTickerName" />
 
         <TextView
             android:id="@+id/txtRefresh"
@@ -47,8 +61,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Last Refreshed: 2020-08-14"
+            android:textColor="@color/textOnPrimary"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/txtTickerName"
             app:layout_constraintTop_toBottomOf="@+id/txtTickerName" />
 
 
@@ -58,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Closed at: $1650.71"
-            android:textColor="#000000"
+            android:textColor="@color/textOnPrimary"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/txtRefresh"
             app:layout_constraintTop_toBottomOf="@+id/txtRefresh" />
@@ -68,7 +83,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:text="Low Reminder: $1800"
+            android:textColor="@color/textOnPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txtHighThreshold"
             app:layout_constraintTop_toBottomOf="@+id/txtHighThreshold" />
 
@@ -78,17 +96,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="High Reminder: $2000"
+            android:textColor="@color/textOnPrimary"
             app:layout_constraintStart_toStartOf="@+id/txtClose"
             app:layout_constraintTop_toBottomOf="@+id/txtClose" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btnDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="right"
-            android:backgroundTint="#FF135D"
-            android:text="Delete"
-            android:textColor="#ffffff"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:background="@drawable/circle_delete_background"
+            android:src="@drawable/ic_baseline_delete_24"
+            android:textColor="@color/textOnPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -99,7 +118,7 @@
             android:layout_marginStart="40dp"
             android:text="TRIGGERED"
             android:textStyle="bold"
-            android:textColor="#E3BD01"
+            android:textColor="@color/triggeredDark"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/txtHighThreshold"
             app:layout_constraintStart_toEndOf="@+id/txtHighThreshold"
@@ -111,11 +130,13 @@
             android:layout_height="wrap_content"
             android:text="TRIGGERED"
             android:textStyle="bold"
-            android:textColor="#E3BD01"
+            android:textColor="@color/triggeredDark"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/txtLowThreshold"
             app:layout_constraintStart_toStartOf="@+id/txtHighIndicator"
             app:layout_constraintTop_toTopOf="@+id/txtLowThreshold" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

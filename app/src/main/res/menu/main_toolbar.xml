@@ -6,6 +6,7 @@
         android:id="@+id/searchTicker"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_baseline_search_24"
+        android:iconTint="@color/textOnSecondary"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
 </menu>

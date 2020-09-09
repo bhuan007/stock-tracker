@@ -3,8 +3,18 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
+<!--        Color of toolbar icon-->
+        <item name="android:textColorSecondary">@color/colorWhiteLight</item>
+
         <item name="colorPrimaryDark">#000000</item>
         <item name="colorAccent">#FF135D</item>
+    </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:editTextColor">@color/colorWhiteLight</item>
+        <item name="android:textColorHint">@color/colorSecondary</item>
+        <item name="editTextBackground">@color/redAccentDark</item>
+
     </style>
 
 </resources>

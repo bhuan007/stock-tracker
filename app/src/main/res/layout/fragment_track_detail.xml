@@ -12,12 +12,26 @@
         android:padding="16dp"
         tools:context=".TrackDetailFragment">
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/card_secondary_background"
+            app:constraint_referenced_ids="txtType, spinnerType, txtLblLow, etLow, txtLblHigh, etHigh
+            , txtLblStartDate, btnStartDate, txtDateSelected, txtLblInterval, etInterval, spinnerInterval, btnFinish"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/txtType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
+            android:layout_marginTop="8dp"
             android:text="Threshold Type:"
+            android:textColor="@color/textOnPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:text="Low:"
+            android:textColor="@color/textOnPrimary"
             app:layout_constraintEnd_toEndOf="@+id/txtType"
             app:layout_constraintTop_toBottomOf="@+id/spinnerType" />
 
@@ -56,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:text="High:"
+            android:textColor="@color/textOnPrimary"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="@+id/txtLblLow"
             app:layout_constraintTop_toBottomOf="@+id/etLow" />
@@ -79,6 +95,7 @@
             android:layout_height="23dp"
             android:layout_marginTop="36dp"
             android:text="Start Tracking On:"
+            android:textColor="@color/textOnPrimary"
             app:layout_constraintEnd_toEndOf="@+id/txtLblHigh"
             app:layout_constraintTop_toBottomOf="@+id/etHigh" />
 
@@ -98,7 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:text="No Date Selected"
-            android:textColor="#FF0000"
+            android:textColor="@color/redAccentPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/txtLblStartDate"
             app:layout_constraintStart_toEndOf="@+id/txtLblStartDate"
             app:layout_constraintTop_toTopOf="@+id/txtLblStartDate" />
@@ -109,6 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:text="Refresh Interval:"
+            android:textColor="@color/textOnPrimary"
             app:layout_constraintEnd_toEndOf="@+id/txtLblStartDate"
             app:layout_constraintTop_toBottomOf="@+id/btnStartDate" />
 
@@ -136,7 +154,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-            android:text="FINISH and Track"
+            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:text="Start Tracking"
+            android:textStyle="bold"
+            android:textColor="@color/textOnSecondary"
+            android:background="@drawable/red_button_background"
+            app:layout_constraintBottom_toBottomOf="@+id/group"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinnerInterval" />

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -168,7 +169,7 @@ public class StockRecAdapter extends RecyclerView.Adapter<StockRecAdapter.ViewHo
 
 
         TextView txtTickerName, txtClose, txtRefresh, txtLowThreshold, txtHighThreshold, txtStockName, txtHighIndicator, txtLowIndicator;
-        Button btnDelete;
+        ImageButton btnDelete;
         CardView parent;
 
         public ViewHolder(@NonNull View itemView) {

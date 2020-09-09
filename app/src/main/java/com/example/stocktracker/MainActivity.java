@@ -223,7 +223,10 @@ public class MainActivity extends AppCompatActivity implements StockRecAdapter.D
 
     @Override
     public void showEmptyText() {
-        txtEmptyMessage.setVisibility(View.VISIBLE);
+        if (db.tickerDao().getAllTickers().size() == 0) {
+            txtEmptyMessage.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
